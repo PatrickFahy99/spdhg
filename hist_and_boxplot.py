@@ -33,15 +33,15 @@ overwrite = False
 titles_on = 0
 
 ##### Read Groundtruth
-ksp = np.load('../data/'+filename+'.npy')
+ksp = np.load('data/'+filename+'.npy')
 
 
 ##### Coil sensitivities estimated with E-Spirit
-if os.path.isfile('../data/'+filename+'_coilsens.npy'):
-    mps = np.load('../data/'+filename+'_coilsens.npy')   
+if os.path.isfile('data/'+filename+'_coilsens.npy'):
+    mps = np.load('data/'+filename+'_coilsens.npy')   
 else:
     mps = mri.app.EspiritCalib(ksp).run()           # ESpirit Calibration
-    np.save('../data/'+filename+'_coilsens.npy', mps) 
+    np.save('data/'+filename+'_coilsens.npy', mps) 
 #pl.ImagePlot(mps, z=0, title='Sensitivity Maps by ESPIRiT')
 
 
@@ -359,7 +359,7 @@ for index,b in enumerate([4]):
     plt.style.use('default')
     prop_cycle = plt.rcParams['axes.prop_cycle']
     colors = prop_cycle.by_key()['color']
-    plt.style.use('seaborn')
+    #plt.style.use('seaborn')
     lw = 2.5
     al = 0.5
     
@@ -433,7 +433,7 @@ for index,b in enumerate([4]):
     plt.style.use('default')
     prop_cycle = plt.rcParams['axes.prop_cycle']
     colors = prop_cycle.by_key()['color']
-    plt.style.use('seaborn')
+    #plt.style.use('seaborn')
     lw = 2.5
     al = 0.5
     

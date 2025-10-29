@@ -47,14 +47,14 @@ for l in [10**-2]:
     for l1 in [10**2]:
     
         ##### Read Groundtruth
-        ksp = np.load('../data/'+filename+'.npy')
+        ksp = np.load('data/'+filename+'.npy')
         
         ##### Coil sensitivities estimated with E-Spirit
-        if os.path.isfile('../data/'+filename+'_coilsens.npy'):
-            mps = np.load('../data/'+filename+'_coilsens.npy')   
+        if os.path.isfile('data/'+filename+'_coilsens.npy'):
+            mps = np.load('data/'+filename+'_coilsens.npy')   
         else:
             mps = mri.app.EspiritCalib(ksp).run()           # ESpirit Calibration
-            np.save('../data/'+filename+'_coilsens.npy', mps) 
+            np.save('data/'+filename+'_coilsens.npy', mps) 
         
         ##### Discrete Space
         n,d1,d2 = ksp.shape                             # n signals of size d1*d2

@@ -73,30 +73,32 @@ for sampling in ['bserial']:
         '''#########################  Get Data  #########################'''
         
         ##### Read Groundtruth
-        ksp = np.load('../data/'+filename+'.npy')
+        ksp = np.load('data/'+filename+'.npy')
         #pl.ImagePlot(sp.ifft(ksp, axes=(-1,-2)),mode='l',z=0,title='Inverse Fourier of data')
         
         ##### Coil sensitivities estimated with E-Spirit
-        if os.path.isfile('../data/'+filename+'_coilsens.npy'):
-            mps = np.load('../data/'+filename+'_coilsens.npy')   
+        if os.path.isfile('data/'+filename+'_coilsens.npy'):
+            mps = np.load('data/'+filename+'_coilsens.npy')   
         else:
             mps = mri.app.EspiritCalib(ksp).run()           # ESpirit Calibration
-            np.save('../data/'+filename+'_coilsens.npy', mps) 
+            np.save('data/'+filename+'_coilsens.npy', mps) 
         #pl.ImagePlot(mps, z=0, title='Sensitivity Maps by ESPIRiT')
         
         ##### PDHG solution
         if model == 'TV' and os.path.isfile('new_results_TV/'+filename+'_truesol.npy'):
             sol = np.load('new_results_TV/'+filename+'_truesol.npy')
-            
+
         ##### Sigpy solution
-        elif os.path.isfile('../data/'+filename+'_sigpy.npy') and not redo_sigpy:
-            sol = np.load('../data/'+filename+'_sigpy.npy')
+        elif os.path.isfile('data/'+filename+'_sigpy.npy') and not redo_sigpy:
+            sol = np.load('data/'+filename+'_sigpy.npy')
         else:
             sol = mri.app.SenseRecon(ksp, mps, lamda=l, max_iter=6*10**2).run()
             if overwrite_sigpy_recon:
-                np.save('../data/'+filename+'_sigpy.npy', sol)
+                np.save('data/'+filename+'_sigpy.npy', sol)
         
-        
+        if len(sol.shape) == 2:
+            sol = np.stack((sol.real.astype(np.float32), sol.imag.astype(np.float32)), axis=0)
+            
         '''#########################  Define Model  #########################'''
         
         ##### Discrete Space
@@ -383,7 +385,7 @@ for sampling in ['bserial']:
         plt.style.use('default')
         prop_cycle = plt.rcParams['axes.prop_cycle']
         colors = prop_cycle.by_key()['color']
-        plt.style.use('seaborn')
+        #plt.style.use('seaborn')
         lw = 2.5
         al = 0.5
         
